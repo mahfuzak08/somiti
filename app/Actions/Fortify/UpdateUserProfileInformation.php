@@ -20,23 +20,57 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
     {
         Validator::make($input, [
             'name' => ['required', 'string', 'max:255'],
-
-            'email' => [
-                'required',
-                'string',
-                'email',
-                'max:255',
-                Rule::unique('users')->ignore($user->id),
-            ],
+            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id), ],
+            'mobile' => ['string'],
+            'gender' => ['string'],
+            'nid' => ['string', 'nullable'],
+            'dob' => ['date', 'nullable'],
+            'father_name' => ['string', 'nullable'],
+            'mother_name' => ['string', 'nullable'],
+            'designation' => ['string', 'nullable'],
+            'label' => ['string', 'nullable'],
+            'bio' => ['string', 'nullable'],
         ])->validateWithBag('updateProfileInformation');
 
         if ($input['email'] !== $user->email &&
             $user instanceof MustVerifyEmail) {
             $this->updateVerifiedUser($user, $input);
         } else {
+            if(! empty($_FILES["img"])){
+                $target_file = public_path('pro_pic\\') . basename($_FILES["img"]["name"]);
+                if (move_uploaded_file($_FILES["img"]["tmp_name"], $target_file)) {
+                    $input['img'] = basename($_FILES["img"]["name"]);
+                } else {
+                    $input['img'] = $input['old_img'];
+                }
+            }
+            else{
+                $input['img'] = $input['old_img'];
+            }
+            
+            // if($request->file('img')){
+            //     $file= $request->file('img');
+            //     $filename= date('YmdHi').$file->getClientOriginalName();
+            //     $file-> move(public_path('pro_pic'), $filename);
+            //     $input['img'] = $filename;
+            // }
+            // else{
+            //     $input['img'] = $input['old_img'];
+            // }
+
             $user->forceFill([
                 'name' => $input['name'],
                 'email' => $input['email'],
+                'mobile' => $input['mobile'],
+                'gender' => $input['gender'],
+                'nid' => $input['nid'],
+                'dob' => $input['dob'],
+                'father_name' => $input['father_name'],
+                'mother_name' => $input['mother_name'],
+                'designation' => $input['designation'],
+                'label' => $input['label'],
+                'bio' => $input['bio'],
+                'img' => $input['img'],
             ])->save();
         }
     }

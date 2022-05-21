@@ -20,3 +20,7 @@ Route::get('/', function () {
 Route::get('/home', function () {
     return view('admin.dashboard');
 })->middleware(['auth', 'verified']);
+
+Route::get('/profile', function () {
+    return view('admin.profile');
+})->middleware(['auth', 'verified']);

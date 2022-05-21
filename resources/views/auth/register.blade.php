@@ -33,6 +33,14 @@
           </div>
           <div class="form-group">
             <div class="input-group">
+              <input type="text" name="mobile" class="form-control @error('mobile') is-invalid @enderror" placeholder="Mobile" value="{{ old('mobile') }}">
+            </div>
+            @error('mobile')
+                <div class="text-danger">{{ $message }}</div>
+            @enderror
+          </div>
+          <div class="form-group">
+            <div class="input-group">
               <input type="password" name="password" class="form-control @error('password') is-invalid @enderror" placeholder="Password">
             </div>
             @error('password')

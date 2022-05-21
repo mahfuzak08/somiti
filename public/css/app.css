@@ -19589,3 +19589,8 @@ small {
 .was-validated .form-control:invalid, .form-control.is-invalid{
   border-color: #dc3545 !important;
 }
+
+#user-profile-information-update img{
+  width: 200px;
+  max-width: 220px;
+}

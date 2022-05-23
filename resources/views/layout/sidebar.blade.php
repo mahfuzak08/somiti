@@ -4,7 +4,7 @@
       <div class="nav-link">
         <div class="user-wrapper">
           <div class="profile-image">
-            <img src="{{ url('assets/images/faces/face8.jpg') }}" alt="profile image">
+            <img class="" src="{{ url('pro_pic/'. auth()->user()->img) }}" onerror="this.onerror=null;this.src='assets/images/faces/face8.jpg';" alt="Profile image">
           </div>
           <div class="text-wrapper">
             <p class="profile-name">{{ auth()->user()->name }}</p>
@@ -40,27 +40,27 @@
       </div>
     </li>
     <li class="nav-item {{ request()->is('home') ? 'active' : '' }}">
-      <a class="nav-link" href="{{ url('/') }}">
+      <a class="nav-link" href="{{ url('/home') }}">
         <i class="menu-icon mdi mdi-television"></i>
         <span class="menu-title">Dashboard</span>
       </a>
     </li>
-    <li class="nav-item {{ request()->is('basic-ui/*') ? 'active' : '' }}">
-      <a class="nav-link" data-toggle="collapse" href="#basic-ui" aria-expanded="{{ request()->is('basic-ui/*') ? true : false }}" aria-controls="basic-ui">
+    <li class="nav-item {{ request()->is('users*') ? 'active' : '' }}">
+      <a class="nav-link" data-toggle="collapse" href="#settings" aria-expanded="{{ request()->is('users*') ? 'true' : 'false' }}" aria-controls="settings">
         <i class="menu-icon mdi mdi-dna"></i>
-        <span class="menu-title">Basic UI Elements</span>
+        <span class="menu-title">Settings</span>
         <i class="menu-arrow"></i>
       </a>
-      <div class="collapse {{ request()->is('basic-ui/*') }}" id="basic-ui">
+      <div class="collapse {{ request()->is('users*') ? 'show' : '' }}" id="settings">
         <ul class="nav flex-column sub-menu">
-          <li class="nav-item {{ request()->is('basic-ui/buttons') }}">
-            <a class="nav-link" href="{{ url('/basic-ui/buttons') }}">Buttons</a>
+          <li class="nav-item {{ request()->is('users*') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ url('users') }}">All Users</a>
           </li>
-          <li class="nav-item {{ request()->is('basic-ui/dropdowns') }}">
-            <a class="nav-link" href="{{ url('/basic-ui/dropdowns') }}">Dropdowns</a>
+          <li class="nav-item {{ request()->is('settings/dropdowns') }}">
+            <a class="nav-link" href="{{ url('/settings/dropdowns') }}">Dropdowns</a>
           </li>
-          <li class="nav-item {{ request()->is('basic-ui/typography') }}">
-            <a class="nav-link" href="{{ url('/basic-ui/typography') }}">Typography</a>
+          <li class="nav-item {{ request()->is('settings/typography') }}">
+            <a class="nav-link" href="{{ url('/settings/typography') }}">Typography</a>
           </li>
         </ul>
       </div>

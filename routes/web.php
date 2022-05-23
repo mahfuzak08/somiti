@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Users;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,3 +25,14 @@ Route::get('/home', function () {
 Route::get('/profile', function () {
     return view('admin.profile');
 })->middleware(['auth', 'verified']);
+
+// Route::prefix('settings')->group(function () {
+//     Route::get('/users', [Users::class, 'index'])->middleware(['auth', 'verified']);
+//     Route::get('/users-add', [Users::class, 'add'])->middleware(['auth', 'verified']);
+// });
+
+Route::controller(Users::class)->group(function () {
+    Route::get('/users', 'index')->middleware(['auth', 'verified']);
+    Route::get('/users-add', 'addForm')->middleware(['auth', 'verified']);
+    Route::post('/users-save', 'save')->middleware(['auth', 'verified']);
+});

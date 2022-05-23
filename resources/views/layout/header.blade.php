@@ -111,7 +111,8 @@
       <li class="nav-item dropdown d-none d-xl-inline-block">
         <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
           <span class="profile-text d-none d-md-inline-flex">{{ auth()->user()->name }}</span>
-          <img class="img-xs rounded-circle" src="{{ url('assets/images/faces/face8.jpg') }}" alt="Profile image"> </a>
+          <img class="img-xs rounded-circle" src="{{ url('pro_pic/'. auth()->user()->img) }}" onerror="this.onerror=null;this.src='assets/images/faces/face8.jpg';" alt="Profile image">
+         </a>
         <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
           {{-- <a class="dropdown-item p-0">
             <div class="d-flex border-bottom w-100 justify-content-center">
@@ -126,7 +127,7 @@
               </div>
             </div>
           </a> --}}
-          <a href='profile' class="dropdown-item mt-2"> My Profile </a>
+          <a href='{{ url('profile')}}' class="dropdown-item mt-2"> My Profile </a>
           <a class="dropdown-item"> Change Password </a>
           <a href={{route('logout')}} class="dropdown-item" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"> Sign Out </a>
           <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">

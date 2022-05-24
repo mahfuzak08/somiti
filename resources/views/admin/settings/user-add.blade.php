@@ -11,10 +11,10 @@
       <div class="card">
         <div class="card-body">
           <h4 class="card-title">Add New User</h4>
-          @if ($errors->updateProfileInformation->any())
+          @if (count($errors) > 0)
             <div class="alert alert-danger">
                 <ul>
-                    @foreach ($errors->updateProfileInformation->all() as $error)
+                    @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
                     @endforeach
                 </ul>
@@ -30,6 +30,10 @@
               <div class="form-group">
                 <label for="exampleInputEmail3">Email address</label>
                 <input type="email" name="email" value="" class="form-control">
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword">Password</label>
+                <input type="password" name="password" value="" class="form-control">
               </div>
               <div class="form-group">
                 <label for="exampleInputMobile">Mobile</label>

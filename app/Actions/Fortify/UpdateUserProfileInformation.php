@@ -21,7 +21,7 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
         Validator::make($input, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id), ],
-            'mobile' => ['string'],
+            'mobile' => ['required', 'string', 'min:11', 'max:13', Rule::unique('users')->ignore($user->id), ],
             'gender' => ['string'],
             'nid' => ['string', 'nullable'],
             'dob' => ['date', 'nullable'],
@@ -37,9 +37,10 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             $this->updateVerifiedUser($user, $input);
         } else {
             if(! empty($_FILES["img"])){
-                $target_file = public_path('pro_pic\\') . basename($_FILES["img"]["name"]);
+                $basefile = date('YmdHi_'). basename($_FILES["img"]["name"]);
+                $target_file = public_path('pro_pic\\') . $basefile;
                 if (move_uploaded_file($_FILES["img"]["tmp_name"], $target_file)) {
-                    $input['img'] = basename($_FILES["img"]["name"]);
+                    $input['img'] = $basefile;
                 } else {
                     $input['img'] = $input['old_img'];
                 }

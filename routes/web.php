@@ -26,6 +26,10 @@ Route::get('/profile', function () {
     return view('admin.profile');
 })->middleware(['auth', 'verified']);
 
+Route::get('/change-password', function () {
+    return view('admin.change-password');
+})->middleware(['auth', 'verified']);
+
 // Route::prefix('settings')->group(function () {
 //     Route::get('/users', [Users::class, 'index'])->middleware(['auth', 'verified']);
 //     Route::get('/users-add', [Users::class, 'add'])->middleware(['auth', 'verified']);

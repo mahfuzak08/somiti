@@ -111,7 +111,11 @@
       <li class="nav-item dropdown d-none d-xl-inline-block">
         <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
           <span class="profile-text d-none d-md-inline-flex">{{ auth()->user()->name }}</span>
-          <img class="img-xs rounded-circle" src="{{ url('pro_pic/'. auth()->user()->img) }}" onerror="this.onerror=null;this.src='assets/images/faces/face8.jpg';" alt="Profile image">
+          @if (isset(auth()->user()->img) && auth()->user()->img !== "")
+            <img class="img-xs rounded-circle" src="{{ url('pro_pic/'. auth()->user()->img) }}" onerror="this.onerror=null;this.src='assets/images/faces/face8.jpg';" alt="Profile image">
+          @else
+            <img class="img-xs rounded-circle" src="{{ url('assets/images/faces/face8.jpg') }}" alt="Profile image">
+          @endif
          </a>
         <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
           {{-- <a class="dropdown-item p-0">

@@ -35,8 +35,9 @@ Route::get('/change-password', function () {
 //     Route::get('/users-add', [Users::class, 'add'])->middleware(['auth', 'verified']);
 // });
 
-Route::controller(Users::class)->group(function () {
+Route::controller(Users::class)->prefix('settings')->group(function () {
     Route::get('/users', 'index')->middleware(['auth', 'verified']);
-    Route::get('/users-add', 'addForm')->middleware(['auth', 'verified']);
-    Route::post('/users-save', 'save')->middleware(['auth', 'verified']);
+    Route::get('/users-add/{type}/{id?}', 'addForm')->middleware(['auth', 'verified']);
+    Route::post('/users-save', 'save')->middleware(['auth', 'verified'])->name('user.save');
+    Route::delete('/users-delete/{id}', 'remove')->middleware(['auth', 'verified']);
 });

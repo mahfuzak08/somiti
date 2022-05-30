@@ -16,25 +16,25 @@ class Users extends Controller
         return view('admin.settings.user')->with($data);
     }
     
-    public function addForm(){
-        return view('admin.settings.user-add');
+    public function addForm($type, $id=null){
+        $data = array();
+        $data["type"] = base64_decode($type);
+        $data["user"] = array();
+        if($id !== null && $id > 0)
+            $data["user"] = User::where('id', $id)->get();
+
+        return view('admin.settings.user-add')->with($data);
     }
     
     /**
      * Validate and create a new user from admin panel
-     *
-     * @param  array  $input
-     * @return \App\Models\User
      */
     public function save(Request $request)
     {
-        // file_put_contents("req.txt", $request->all());
-        // dd($request->name, $request->email);
-
         $this->validate($request, [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', Rule::unique(User::class),],
-            'mobile' => ['required', 'string', 'min:11', 'max:13', Rule::unique(User::class),],
+            'email' => ['required', 'string', 'email', 'max:255', Rule::unique(User::class)->ignore($request->id),],
+            'mobile' => ['required', 'string', 'min:11', 'max:13', Rule::unique(User::class)->ignore($request->id),],
             'gender' => ['string'],
             'nid' => ['string', 'nullable'],
             'dob' => ['date', 'nullable'],
@@ -54,8 +54,7 @@ class Users extends Controller
         else{
             $request->img = '';
         }
-        
-        User::insert([
+        $save_data = array(
             'name' => $request->name,
             'email' => $request->email,
             'mobile' => $request->mobile,
@@ -68,10 +67,31 @@ class Users extends Controller
             'label' => $request->label,
             'bio' => $request->bio,
             'img' => $request->img,
-            'email_verified_at' => date("Y-m-d H:i:s", time()),
-            'password' => Hash::make($request->password),
-        ]);
-    
-        return redirect('/users');
+        );
+        try {
+            if($request->id){
+                User::where('id', $request->id)->update($save_data);
+                $request->session()->flash('status','User update successfully.');
+            }
+            else{
+                $save_data['email_verified_at'] = date("Y-m-d H:i:s", time());
+                $save_data['password'] = Hash::make($request->password);
+                User::insert($save_data);
+                $request->session()->flash('status','User added successfully.');
+            }
+        
+            return redirect('/settings/users');
+        } catch (\Illuminate\Database\QueryException $e) {
+            return redirect('/settings/users/addForm/'.base64_encode($request->post_type));
+        }
+    }
+
+    public function remove($id, Request $request){
+        if(User::where('id', $id)->delete())
+            $request->session()->flash("status", "User delete successfully!!!");
+        else
+            $request->session()->flash("status", "User delete error!!!");
+        
+        return redirect('/settings/users');
     }
 }

@@ -10,7 +10,7 @@
     <div class="col-12 grid-margin stretch-card">
       <div class="card">
         <div class="card-body">
-          <h4 class="card-title">Add New User</h4>
+          <h4 class="card-title">{{$type}} User</h4>
           @if (count($errors) > 0)
             <div class="alert alert-danger">
                 <ul>
@@ -20,78 +20,86 @@
                 </ul>
             </div>
           @endif
-          <form action="{{ url('users-save') }}" method="POST" enctype="multipart/form-data" class="forms-sample row" id="user-profile-information-update">
+          <form action="{{route('user.save') }}" method="POST" enctype="multipart/form-data" class="forms-sample row" id="user-profile-information-update">
             @csrf
+            <input type="hidden" name="id" value="{{ $type === 'addnew' ? '' : $user[0]->id}}">
+            <input type="hidden" name="post_type" value="{{ $type }}">
             <div class="col-12 col-md-8">
               <div class="form-group">
                 <label for="exampleInputName1">Name</label>
-                <input type="text" name="name" value="" class="form-control" id="exampleInputName1" placeholder="Name">
+                <input @if($type === 'view') disabled @endif type="text" name="name" value="{{$type!=='addnew' ? $user[0]->name : ''}}" class="form-control" id="exampleInputName1" placeholder="Name">
               </div>
               <div class="form-group">
                 <label for="exampleInputEmail3">Email address</label>
-                <input type="email" name="email" value="" class="form-control">
+                <input @if($type === 'view') disabled @endif type="email" name="email" value="{{$type!=='addnew' ? $user[0]->email : ''}}" class="form-control">
               </div>
+              @if($type === 'addnew')
               <div class="form-group">
                 <label for="exampleInputPassword">Password</label>
                 <input type="password" name="password" value="" class="form-control">
               </div>
+              @endif
               <div class="form-group">
                 <label for="exampleInputMobile">Mobile</label>
-                <input type="number" name="mobile" value="" class="form-control" id="exampleInputMobile" min="8800000000001" placeholder="880XXXXXXXXXX">
+                <input @if($type === 'view') disabled @endif type="number" name="mobile" value="{{$type!=='addnew' ? $user[0]->mobile : ''}}" class="form-control" id="exampleInputMobile" min="8800000000001" placeholder="880XXXXXXXXXX">
               </div>
               <div class="form-group form-inline">
                 <label for="exampleSelectGender">Gender</label>
                 <div class="form-radio" style="margin-left: 15px;">
                   <label class="form-check-label">
-                    <input type="radio" class="form-check-input" name="gender" id="gender1" value="Male" checked> Male <i class="input-helper"></i></label>
+                    <input @if($type === 'view') disabled @endif type="radio" class="form-check-input" name="gender" id="gender1" value="Male" {{$type==='addnew' ? 'checked' : $user[0]->gender === 'Male' ? 'checked' : ''}}> Male <i class="input-helper"></i></label>
                 </div>
                 <div class="form-radio" style="margin-left: 15px; margin-right: 15px;">
                   <label class="form-check-label">
-                    <input type="radio" class="form-check-input" name="gender" id="gender2" value="Female"> Female <i class="input-helper"></i></label>
+                    <input @if($type === 'view') disabled @endif type="radio" class="form-check-input" name="gender" id="gender2" value="Female" {{$type==='addnew' ? '' : $user[0]->gender === 'Female' ? 'checked' : ''}}> Female <i class="input-helper"></i></label>
                 </div>
                 <div class="form-radio">
                   <label class="form-check-label">
-                    <input type="radio" class="form-check-input" name="gender" id="gender3" value="Common"> Common <i class="input-helper"></i></label>
+                    <input @if($type === 'view') disabled @endif type="radio" class="form-check-input" name="gender" id="gender3" value="Common" {{$type==='addnew' ? '' : $user[0]->gender === 'Common' ? 'checked' : ''}}> Common <i class="input-helper"></i></label>
                 </div>
               </div>
               <div class="form-group">
                 <label for="exampleInputNID">NID</label>
-                <input type="number" name="nid" value="" class="form-control" id="exampleInputNID" placeholder="NID">
+                <input @if($type === 'view') disabled @endif type="number" name="nid" value="{{$type!=='addnew' ? $user[0]->nid : ''}}" class="form-control" id="exampleInputNID" placeholder="NID">
               </div>
               <div class="form-group">
                 <label for="exampleInputbod">Date of Birth</label>
-                <input type="date" name="dob" value="" class="form-control" id="exampleInputbod" placeholder="YYYY-MM-DD">
+                <input @if($type === 'view') disabled @endif type="date" name="dob" value="{{$type!=='addnew' ? $user[0]->dob : ''}}" class="form-control" id="exampleInputbod" placeholder="YYYY-MM-DD">
               </div>
               <div class="form-group">
                 <label for="exampleInputFatherName">Father Name</label>
-                <input type="text" name="father_name" value="" class="form-control" id="exampleInputFatherName" placeholder="Father Name">
+                <input @if($type === 'view') disabled @endif type="text" name="father_name" value="{{$type!=='addnew' ? $user[0]->father_name : ''}}" class="form-control" id="exampleInputFatherName" placeholder="Father Name">
               </div>
               <div class="form-group">
                 <label for="exampleInputMotherName">Mother Name</label>
-                <input type="text" name="mother_name" value="" class="form-control" id="exampleInputMotherName" placeholder="Mother Name">
+                <input @if($type === 'view') disabled @endif type="text" name="mother_name" value="{{$type!=='addnew' ? $user[0]->mother_name : ''}}" class="form-control" id="exampleInputMotherName" placeholder="Mother Name">
               </div>
               <div class="form-group">
                 <label for="exampleInputDesignation">Designation</label>
-                <input type="text" name="designation" value="" class="form-control" id="exampleInputDesignation" placeholder="Designation">
+                <input @if($type === 'view') disabled @endif type="text" name="designation" value="{{$type!=='addnew' ? $user[0]->designation : ''}}" class="form-control" id="exampleInputDesignation" placeholder="Designation">
               </div>
               <div class="form-group">
                 <label for="exampleInputPosition">Position</label>
-                <input type="text" name="label" value="" class="form-control" id="exampleInputPosition" placeholder="Position">
+                <input @if($type === 'view') disabled @endif type="text" name="label" value="{{$type!=='addnew' ? $user[0]->label : ''}}" class="form-control" id="exampleInputPosition" placeholder="Position">
               </div>
               <div class="form-group">
                 <label for="examplebiography">Biography</label>
-                <textarea class="form-control" name="bio" id="examplebiography" rows="4"></textarea>
+                <textarea @if($type === 'view') disabled @endif class="form-control" name="bio" id="examplebiography" rows="4">{{$type!=='addnew' ? $user[0]->bio : ''}}</textarea>
               </div>
             </div>
             <div class="col-12 col-md-4">
-              <img class="" src="assets/images/faces/face8.jpg" alt="Profile image">
-              <input type="hidden" name="old_img" value="">
+              @if (isset($user[0]->img) && $user[0]->img !== "")
+                  <img src="{{ url('pro_pic/'.$user[0]->img) }}" alt="Profile image">
+              @else
+                <img class="" src="{{ url('assets/images/faces/face8.jpg') }}" alt="Profile image">
+              @endif              
+              <input type="hidden" name="old_img" value="{{$type!=='addnew' ? $user[0]->img : ''}}">
               <div class="form-group">
-                <input type="file" name="img" class="file-upload-default">
+                <input @if($type === 'view') disabled @endif type="file" name="img" class="file-upload-default">
               </div>
             </div>
-            <button type="submit" class="btn btn-primary mr-2">Submit</button>
-            <button class="btn btn-light">Cancel</button>
+            <button @if($type === 'view') disabled @endif type="submit" class="btn btn-primary mr-2">Submit</button>
+            <a href="{{ url('settings/users') }}" class="btn btn-light">Cancel</a>
           </form>
         </div>
       </div>

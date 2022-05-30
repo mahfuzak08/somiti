@@ -11,6 +11,11 @@
       <div class="card">
         <div class="card-body">
           <h4 class="card-title">My Profile</h4>
+          @if(session('status'))
+            <div class="alert alert-success" role="alert">
+              {{ session('status') }}
+            </div>
+          @endif
           @if ($errors->updateProfileInformation->any())
             <div class="alert alert-danger">
                 <ul>

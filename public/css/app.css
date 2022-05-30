@@ -18725,6 +18725,19 @@ small {
   margin-left: 1.25rem;
 }
 
+.sidebar .nav .nav-item .nav-link .submenu-icon {
+  margin-right: 0.50rem;
+  width: 14px;
+  line-height: 1;
+  font-size: 18px;
+  color: #979696;
+}
+
+.rtl .sidebar .nav .nav-item .nav-link .submenu-icon {
+  margin-right: 0;
+  margin-left: 0.50rem;
+}
+
 .sidebar .nav .nav-item .nav-link .menu-title {
   color: inherit;
   display: inline-block;

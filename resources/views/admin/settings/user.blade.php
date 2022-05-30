@@ -12,9 +12,14 @@
         <div class="card-body">
             <div class="d-sm-flex justify-content-between align-items-center mb-4">
               <h2 class="card-title mb-0">All Users</h2> 
+              @if(session('status'))
+                <div class="alert alert-success" role="alert">
+                  {{ session('status') }}
+                </div>
+              @endif
               <div class="wrapper d-flex">
                 <div class="d-flex align-items-center mr-3">
-                  <a href="{{url('users-add')}}" class="btn btn-outline-success btn-fw"><i class="mdi mdi-plus-circle-outline"></i>Add New</a>
+                  <a href="{{url('settings/users-add/'.base64_encode('addnew'))}}" class="btn btn-outline-success btn-fw"><i class="mdi mdi-plus-circle-outline"></i>Add New</a>
                 </div>
               </div>
             </div>
@@ -27,6 +32,7 @@
                     <th> Mobile </th>
                     <th> Father's Name </th>
                     <th> Date of Birth </th>
+                    <th> Status </th>
                     <th> Action </th>
                   </tr>
                 </thead>
@@ -38,9 +44,21 @@
                       <td> {{$user->mobile}} </td>
                       <td> {{$user->father_name}} </td>
                       <td> {{$user->dob}} </td>
+                      <td> 
+                        @if($user->email_verified_at)
+                          <span class="badge badge-success"> Verified </span>
+                        @else
+                          <span class="badge badge-dark"> Unverified </span>
+                        @endif 
+                      </td>
                       <td>
-                        <a href="#" class="badge badge-warning"> Edit </a>
-                        <a href="#" class="badge badge-success"> Details </a>
+                        <a href="{{ url('settings/users-add/'.base64_encode('view').'/'.$user->id)}}" class="badge badge-primary"> View </a>
+                        <a href="{{ url('settings/users-add/'.base64_encode('edit').'/'.$user->id)}}" class="badge badge-warning"> Edit </a>
+                        <a href="{{ url('settings/users-delete/'.$user->id) }}" onclick="event.preventDefault(); document.getElementById('delete-form-'{{$loop->iteration}}).submit();" class="badge badge-danger"> Delete </a>
+                        <form action="{{ url('settings/users-delete/'.$user->id) }}" method="POST" id="delete-form-{{$loop->iteration}}" class="d-none">
+                          @csrf
+                          @method('DELETE')
+                        </form>
                       </td>
                     </tr>
                   @endforeach

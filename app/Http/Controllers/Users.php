@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Role;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -93,5 +94,62 @@ class Users extends Controller
             $request->session()->flash("status", "User delete error!!!");
         
         return redirect('/settings/users');
+    }
+
+    /**
+     * User Role Management
+     */
+    public function role(){
+        $data["role"] = Role::all();
+        return view('admin.settings.role')->with($data);
+    }
+
+    public function roleForm($id=null){
+        $data = array();
+        $data["role"] = array();
+        if($id !== null && $id > 0){
+            $data["role"] = Role::where('id', $id)->get();
+            $data["type"] = "edit";
+        }
+        else{
+            $data["type"] = "add";
+        }
+
+        return view('admin.settings.role-add')->with($data);
+    }
+
+    public function roleSave(Request $request)
+    {
+        $this->validate($request, [
+            'name' => ['required', 'string', 'max:255'],
+        ]);
+        
+        $save_data = array(
+            'name' => $request->name,
+            'access' => join('', $request->crud),
+        );
+        try {
+            if($request->id){
+                Role::where('id', $request->id)->update($save_data);
+                $request->session()->flash('status','Role update successfully.');
+            }
+            else{
+                Role::insert($save_data);
+                $request->session()->flash('status','Role added successfully.');
+            }
+        
+            return redirect('/settings/role');
+        } catch (\Illuminate\Database\QueryException $e) {
+            return redirect('/settings/users/roleForm');
+        }
+    }
+
+    public function roleRemove($id, Request $request){
+        if(Role::where('id', $id)->delete())
+            $request->session()->flash("status", "Role delete successfully!!!");
+        else
+            $request->session()->flash("status", "Role delete error!!!");
+        
+        return redirect('/settings/role');
     }
 }

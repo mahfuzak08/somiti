@@ -60,8 +60,8 @@
           <li class="nav-item {{ request()->is('settings/users*') ? 'active' : '' }}">
             <a class="nav-link" href="{{ url('settings/users') }}"><i class="submenu-icon mdi mdi-account-multiple"></i> All Users</a>
           </li>
-          <li class="nav-item {{ request()->is('settings/position') }}">
-            <a class="nav-link" href="{{ url('settings/position') }}"><i class="submenu-icon mdi mdi-file-tree"></i> Position Setup</a>
+          <li class="nav-item {{ request()->is('settings/role*') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ url('settings/role') }}"><i class="submenu-icon mdi mdi-file-tree"></i> Role Management</a>
           </li>
           <li class="nav-item {{ request()->is('settings/typography') }}">
             <a class="nav-link" href="{{ url('/settings/typography') }}">Typography</a>

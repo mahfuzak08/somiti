@@ -54,7 +54,7 @@
                       <td>
                         <a href="{{ url('settings/users-add/'.base64_encode('view').'/'.$user->id)}}" class="badge badge-primary"> View </a>
                         <a href="{{ url('settings/users-add/'.base64_encode('edit').'/'.$user->id)}}" class="badge badge-warning"> Edit </a>
-                        <a href="{{ url('settings/users-delete/'.$user->id) }}" onclick="event.preventDefault(); document.getElementById('delete-form-'{{$loop->iteration}}).submit();" class="badge badge-danger"> Delete </a>
+                        <a href="{{ url('settings/users-delete/'.$user->id) }}" onclick="event.preventDefault(); document.getElementById('delete-form-{{$loop->iteration}}').submit();" class="badge badge-danger"> Delete </a>
                         <form action="{{ url('settings/users-delete/'.$user->id) }}" method="POST" id="delete-form-{{$loop->iteration}}" class="d-none">
                           @csrf
                           @method('DELETE')

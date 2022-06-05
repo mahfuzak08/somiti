@@ -40,4 +40,9 @@ Route::controller(Users::class)->prefix('settings')->group(function () {
     Route::get('/users-add/{type}/{id?}', 'addForm')->middleware(['auth', 'verified']);
     Route::post('/users-save', 'save')->middleware(['auth', 'verified'])->name('user.save');
     Route::delete('/users-delete/{id}', 'remove')->middleware(['auth', 'verified']);
+    
+    Route::get('/role', 'role')->middleware(['auth', 'verified']);
+    Route::get('/role-add/{id?}', 'roleForm')->middleware(['auth', 'verified']);
+    Route::post('/role-save', 'roleSave')->middleware(['auth', 'verified'])->name('role.save');
+    Route::delete('/role-delete/{id}', 'roleRemove')->middleware(['auth', 'verified']);
 });

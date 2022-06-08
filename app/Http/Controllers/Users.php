@@ -22,8 +22,8 @@ class Users extends Controller
         $data["type"] = base64_decode($type);
         $data["user"] = array();
         if($id !== null && $id > 0)
-            $data["user"] = User::where('id', $id)->get();
-
+            $data["user"] = User::join('roles', 'users.label', '=', 'roles.id')->where('users.id', $id)->get(['users.*', 'roles.name as role_name']);
+        $data["role"] = Role::where('id', '>', 1)->get();
         return view('admin.settings.user-add')->with($data);
     }
     

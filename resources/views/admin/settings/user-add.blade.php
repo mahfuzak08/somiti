@@ -80,7 +80,14 @@
               </div>
               <div class="form-group">
                 <label for="exampleInputPosition">Position</label>
-                <input @if($type === 'view') disabled @endif type="text" name="label" value="{{$type!=='addnew' ? $user[0]->label : ''}}" class="form-control" id="exampleInputPosition" placeholder="Position">
+                <select class="form-control" @if($type === 'view') disabled @endif name="label" id="exampleFormControlSelect1">
+                    @if(auth()->user()->label == 1)
+                      <option value="{{ auth()->user()->label }}" selected>{{ $user[0]->role_name }}</option>
+                    @endif
+                    @foreach($role as $row)
+                        <option value="{{ $row->id }}" {{auth()->user()->label == $row->id  ? 'selected' : ''}}>{{ $row->name}}</option>
+                    @endforeach  
+                </select>
               </div>
               <div class="form-group">
                 <label for="examplebiography">Biography</label>

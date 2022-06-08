@@ -79,7 +79,11 @@
               </div>
               <div class="form-group">
                 <label for="exampleInputPosition">Position</label>
-                <input type="text" name="label" value="{{ auth()->user()->label }}" class="form-control" id="exampleInputPosition" placeholder="Position">
+                <select class="form-control" @if(auth()->user()->label > 2) disabled @endif name="label" id="exampleFormControlSelect1">
+                    @foreach($role as $row)
+                        <option value="{{ $row->id }}" {{auth()->user()->label == $row->id  ? 'selected' : ''}}>{{ $row->name}}</option>
+                    @endforeach  
+                </select>
               </div>
               <div class="form-group">
                 <label for="examplebiography">Biography</label>

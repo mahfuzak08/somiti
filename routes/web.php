@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Users;
+use App\Models\Role;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,7 +24,8 @@ Route::get('/home', function () {
 })->middleware(['auth', 'verified']);
 
 Route::get('/profile', function () {
-    return view('admin.profile');
+    $data["role"] = Role::all();
+    return view('admin.profile')->with($data);
 })->middleware(['auth', 'verified']);
 
 Route::get('/change-password', function () {

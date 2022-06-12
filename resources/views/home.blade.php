@@ -41,8 +41,14 @@
                 <li class="nav-item">
                 <a class="nav-link" href="#">Home</a>
                 </li>
-                <li class="nav-item">
-                <a class="nav-link" href="#">About</a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">About</a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="services.html">Services</a>
+                        <a class="dropdown-item" href="blog.html">Blog</a>
+                        <a class="dropdown-item" href="blog-single.html">Blog Single</a>
+                        <a class="dropdown-item" href="single.html">Landing Page</a>
+                    </div>
                 </li>
                 <li class="nav-item">
                 <a class="nav-link" href="#">Services</a>

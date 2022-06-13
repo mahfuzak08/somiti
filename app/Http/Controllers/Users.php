@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Role;
+use App\Models\Address;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -21,9 +22,11 @@ class Users extends Controller
         $data = array();
         $data["type"] = base64_decode($type);
         $data["user"] = array();
+        $data["address"] = array();
+        $data["address_type"] = array('Present', 'Permanent', 'Office', 'Business');
         if($id !== null && $id > 0){
             $data["user"] = User::join('roles', 'users.label', '=', 'roles.id')->where('users.id', $id)->get(['users.*', 'roles.name as role_name']);
-            // $data["address"] = 
+            $data["address"] = Address::where('user_id', $id)->get();
         }
         $data["role"] = Role::where('id', '>', 1)->get();
         return view('admin.settings.user-add')->with($data);

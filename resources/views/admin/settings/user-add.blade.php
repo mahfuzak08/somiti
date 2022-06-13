@@ -90,7 +90,7 @@
                   <div class="form-group">
                     <label for="exampleInputPosition">Position</label>
                     <select class="form-control" @if($type === 'view') disabled @endif name="label" id="exampleFormControlSelect1">
-                        @if(auth()->user()->label == 1)
+                        @if($type!=='addnew' && auth()->user()->label == 1)
                           <option value="{{ auth()->user()->label }}" selected>{{ $user[0]->role_name }}</option>
                         @endif
                         @foreach($role as $row)
@@ -119,39 +119,43 @@
               </form>
             </div>
             <div class="tab-pane fade" id="nav-address" role="tabpanel" aria-labelledby="nav-address-tab">
-              <form action="{{route('user.save') }}" method="POST" class="forms-sample row" id="user-profile-information-update">
+              <form action="{{route('address.save') }}" method="POST" class="forms-sample row" id="user-profile-information-update">
                 @csrf
                 <input type="hidden" name="user_id" value="{{ $type === 'addnew' ? '' : $user[0]->id}}">
                 <input type="hidden" name="user_type" value="User">
                 @for($i=0; $i<count($address_type); $i++)
-                <div class="col-12 col-md-6" style="margin-bottom: 50px">
-                  <input type="hidden" name="address_type" value="{{$address_type[$i]}}">
+                <div class="col-12 col-md-6" style="margin: 50px 0px">
+                  <input type="hidden" name="address_type[]" value="{{$address_type[$i]}}">
                   <div class="form-group">
                     <label>{{$address_type[$i]}} Address</label>
-                    <input @if($type === 'view') disabled @endif type="text" name="full_address[]" value="{{$type!=='addnew' ? $user[0]->name : ''}}" class="form-control" placeholder="{{$address_type[$i]}} Address">
+                    <input @if($type === 'view') disabled @endif type="text" name="full_address[]" value="{{$type!=='addnew' && !empty($address[$i]->full_address) ? $address[$i]->full_address : ''}}" class="form-control" placeholder="{{$address_type[$i]}} Address">
                   </div>
                   <div class="row">
                     <div class="form-group col-12 col-md-6">
                       <label>Division</label>
-                      <input @if($type === 'view') disabled @endif type="text" name="division[]" value="{{$type!=='addnew' ? $user[0]->name : ''}}" class="form-control" placeholder="Division">
+                      <input @if($type === 'view') disabled @endif type="text" name="division[]" value="{{$type!=='addnew' && !empty($address[$i]->division) ? $address[$i]->division : ''}}" class="form-control" placeholder="Division">
                     </div>
                     <div class="form-group col-12 col-md-6">
                       <label>District</label>
-                      <input @if($type === 'view') disabled @endif type="text" name="district[]" value="{{$type!=='addnew' ? $user[0]->name : ''}}" class="form-control" placeholder="District">
+                      <input @if($type === 'view') disabled @endif type="text" name="district[]" value="{{$type!=='addnew' && !empty($address[$i]->district) ? $address[$i]->district : ''}}" class="form-control" placeholder="District">
                     </div>
                   </div>
                   <div class="row">
                     <div class="form-group col-12 col-md-6">
                       <label>City</label>
-                      <input @if($type === 'view') disabled @endif type="text" name="city[]" value="{{$type!=='addnew' ? $user[0]->name : ''}}" class="form-control" placeholder="City">
+                      <input @if($type === 'view') disabled @endif type="text" name="city[]" value="{{$type!=='addnew' && !empty($address[$i]->city) ? $address[$i]->city : ''}}" class="form-control" placeholder="City">
                     </div>
                     <div class="form-group col-12 col-md-6">
                       <label>ZIP Code</label>
-                      <input @if($type === 'view') disabled @endif type="text" name="zip[]" value="{{$type!=='addnew' ? $user[0]->name : ''}}" class="form-control" placeholder="ZIP Code">
+                      <input @if($type === 'view') disabled @endif type="text" name="zip[]" value="{{$type!=='addnew' && !empty($address[$i]->zip) ? $address[$i]->zip : ''}}" class="form-control" placeholder="ZIP Code">
                     </div>
                   </div>
                 </div>
                 @endfor
+                <div class="col-12">
+                  <button @if($type === 'view') disabled @endif type="submit" class="btn btn-primary mr-2">Submit</button>
+                  <a href="{{ url('settings/users') }}" class="btn btn-light">Cancel</a>
+                </div>
               </form>
             </div>
             <div class="tab-pane fade" id="nav-nominee" role="tabpanel" aria-labelledby="nav-nominee-tab">Nominee Form</div>

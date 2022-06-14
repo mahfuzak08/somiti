@@ -119,42 +119,68 @@
               </form>
             </div>
             <div class="tab-pane fade" id="nav-address" role="tabpanel" aria-labelledby="nav-address-tab">
-              <form action="{{route('address.save') }}" method="POST" class="forms-sample row" id="user-profile-information-update">
+              <form action="{{route('address.save') }}" method="POST" class="forms-sample row" id="nav-add-form">
                 @csrf
                 <input type="hidden" name="user_id" value="{{ $type === 'addnew' ? '' : $user[0]->id}}">
+                <input type="hidden" name="id" value="">
                 <input type="hidden" name="user_type" value="User">
-                @for($i=0; $i<count($address_type); $i++)
-                <div class="col-12 col-md-6" style="margin: 50px 0px">
-                  <input type="hidden" name="address_type[]" value="{{$address_type[$i]}}">
-                  <div class="form-group">
-                    <label>{{$address_type[$i]}} Address</label>
-                    <input @if($type === 'view') disabled @endif type="text" name="full_address[]" value="{{$type!=='addnew' && !empty($address[$i]->full_address) ? $address[$i]->full_address : ''}}" class="form-control" placeholder="{{$address_type[$i]}} Address">
+                <div class="col-12 col-md-8">
+                  <div class="form-group form-inline">
+                    <div class="form-radio" style="margin-left: 15px;">
+                      <label class="form-check-label">
+                        <input @if($type === 'view') disabled @endif type="radio" class="form-check-input" name="address_type" id="address_type1" value="Present" {{$type==='addnew' ? 'checked' : ''}}> Present <i class="input-helper"></i></label>
+                    </div>
+                    <div class="form-radio" style="margin-left: 15px; margin-right: 15px;">
+                      <label class="form-check-label">
+                        <input @if($type === 'view') disabled @endif type="radio" class="form-check-input" name="address_type" id="address_type2" value="Permanent"> Permanent <i class="input-helper"></i></label>
+                    </div>
+                    <div class="form-radio" style="margin-left: 15px; margin-right: 15px;">
+                      <label class="form-check-label">
+                        <input @if($type === 'view') disabled @endif type="radio" class="form-check-input" name="address_type" id="address_type3" value="Office"> Office <i class="input-helper"></i></label>
+                    </div>
+                    <div class="form-radio">
+                      <label class="form-check-label">
+                        <input @if($type === 'view') disabled @endif type="radio" class="form-check-input" name="address_type" id="address_type4" value="Business"> Business <i class="input-helper"></i></label>
+                    </div>
                   </div>
-                  <div class="row">
-                    <div class="form-group col-12 col-md-6">
-                      <label>Division</label>
-                      <input @if($type === 'view') disabled @endif type="text" name="division[]" value="{{$type!=='addnew' && !empty($address[$i]->division) ? $address[$i]->division : ''}}" class="form-control" placeholder="Division">
-                    </div>
-                    <div class="form-group col-12 col-md-6">
-                      <label>District</label>
-                      <input @if($type === 'view') disabled @endif type="text" name="district[]" value="{{$type!=='addnew' && !empty($address[$i]->district) ? $address[$i]->district : ''}}" class="form-control" placeholder="District">
-                    </div>
+                  <div class="form-group">
+                    <label>Address</label>
+                    <input @if($type === 'view') disabled @endif type="text" name="full_address" class="form-control" placeholder="Address">
                   </div>
                   <div class="row">
                     <div class="form-group col-12 col-md-6">
                       <label>City</label>
-                      <input @if($type === 'view') disabled @endif type="text" name="city[]" value="{{$type!=='addnew' && !empty($address[$i]->city) ? $address[$i]->city : ''}}" class="form-control" placeholder="City">
+                      <input @if($type === 'view') disabled @endif type="text" name="city" class="form-control" placeholder="City">
+                    </div>
+                    <div class="form-group col-12 col-md-6">
+                      <label>District</label>
+                      <input @if($type === 'view') disabled @endif type="text" name="district" class="form-control" placeholder="District">
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="form-group col-12 col-md-6">
+                      <label>Division</label>
+                      <input @if($type === 'view') disabled @endif type="text" name="division" class="form-control" placeholder="Division">
                     </div>
                     <div class="form-group col-12 col-md-6">
                       <label>ZIP Code</label>
-                      <input @if($type === 'view') disabled @endif type="text" name="zip[]" value="{{$type!=='addnew' && !empty($address[$i]->zip) ? $address[$i]->zip : ''}}" class="form-control" placeholder="ZIP Code">
+                      <input @if($type === 'view') disabled @endif type="text" name="zip" class="form-control" placeholder="ZIP Code">
                     </div>
+                    <button @if($type === 'view') disabled @endif type="submit" class="btn btn-primary mr-2">Submit</button>
+                    <a href="{{ url('settings/users') }}" class="btn btn-light">Cancel</a>
                   </div>
                 </div>
-                @endfor
-                <div class="col-12">
-                  <button @if($type === 'view') disabled @endif type="submit" class="btn btn-primary mr-2">Submit</button>
-                  <a href="{{ url('settings/users') }}" class="btn btn-light">Cancel</a>
+                <div class="col-12 col-md-4">
+                  @foreach($address as $row)
+                    <address id="address{{$row->id}}">
+                      <h4>{{$row->address_type}} Address</h4>
+                      <span class="fulladdress">{{$row->full_address}}</span><br>
+                      <span class="city">{{$row->city}}</span>, <span class="district">{{$row->district}}</span><br>
+                      <span class="division">{{$row->division}}</span>, <span class="zip">{{$row->zip}}</span>. 
+                      <a href="#" onclick="edit({{$row->id}})" class="badge badge-warning"> Edit </a>
+                      <a href="{{ url('settings/users-delete/') }}" onclick="event.preventDefault(); document.getElementById('delete-form-{{$loop->iteration}}').submit();" class="badge badge-danger"> Delete </a>
+                    </address><br><br>
+                  @endforeach
                 </div>
               </form>
             </div>
@@ -175,4 +201,33 @@
 
 @push('custom-scripts')
   <script src="{{ asset('assets/js/dashboard.js') }}" defer></script>
+  <script>
+    function edit(id){
+      let ele = $("#address"+id);
+      $('#nav-add-form input[name=id]').val(id);
+      switch($(ele).find('h4').text()){
+        case 'Present Address':
+          $('#nav-add-form #address_type1').attr("checked", "checked");
+          break;
+        case 'Permanent Address':
+          $('#nav-add-form #address_type2').attr("checked", "checked");
+          break;
+        case 'Office Address':
+          $('#nav-add-form #address_type3').attr("checked", "checked");
+          break;
+        case 'Business Address':
+          $('#nav-add-form #address_type4').attr("checked", "checked");
+          break;
+      }
+      $('#nav-add-form input[name=full_address]').val(ele.find('.fulladdress').text());
+      $('#nav-add-form input[name=city]').val(ele.find('.city').text());
+      $('#nav-add-form input[name=district]').val(ele.find('.district').text());
+      $('#nav-add-form input[name=division]').val(ele.find('.division').text());
+      // console.log();
+      // console.log();
+      // console.log(ele.find('.city').text());
+      // ele = ele.remove('br');
+      // console.log(ele);
+    }
+  </script>
 @endpush

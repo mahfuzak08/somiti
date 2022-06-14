@@ -42,7 +42,7 @@ Route::controller(Users::class)->prefix('settings')->group(function () {
     Route::get('/users-add/{type}/{id?}', 'addForm')->middleware(['auth', 'verified']);
     Route::post('/users-save', 'save')->middleware(['auth', 'verified'])->name('user.save');
     Route::delete('/users-delete/{id}', 'remove')->middleware(['auth', 'verified']);
-    Route::post('/users-address-save', 'addressSave')->middleware(['auth', 'verified'])->name('address.save');
+    Route::post('/users-address-save/{type?}/{id?}', 'addressSave')->middleware(['auth', 'verified'])->name('address.save');
 
     Route::get('/role', 'role')->middleware(['auth', 'verified']);
     Route::get('/role-add/{id?}', 'roleForm')->middleware(['auth', 'verified']);

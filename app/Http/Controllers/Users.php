@@ -106,41 +106,78 @@ class Users extends Controller
         $this->validate($request, [
             'user_id' => ['required'],
             'user_type' => ['required', 'in:User,Nominee'],
-            'full_address*' => ['string', 'required', 'max:255'],
-            'address_type*' => ['string', 'required', 'in:Present,Permanent,Office,Business'],
-            'division*' => ['string', 'nullable'],
-            'district*' => ['string', 'nullable'],
-            'city*' => ['string', 'nullable'],
-            'zip*' => ['string', 'nullable'],
+            'full_address' => ['string', 'required', 'max:255'],
+            'address_type' => ['string', 'required', 'in:Present,Permanent,Office,Business'],
+            'division' => ['string', 'nullable'],
+            'district' => ['string', 'nullable'],
+            'city' => ['string', 'nullable'],
+            'zip' => ['string', 'nullable'],
         ]);
-        $all_save_data = array();
-        for($i=0; $i<count($request->full_address) && !empty($request->full_address[$i]) && $request->full_address[$i] != ''; $i++){
-            $all_save_data[] = array(
+        $save_data = array(
                 'user_id' => $request->user_id,
-                'full_address' => $request->full_address[$i],
+                'full_address' => $request->full_address,
                 'user_type' => $request->user_type,
-                'address_type' => $request->address_type[$i],
-                'division' => $request->division[$i],
-                'district' => $request->district[$i],
-                'city' => $request->city[$i],
-                'zip' => $request->zip[$i],
+                'address_type' => $request->address_type,
+                'division' => $request->division,
+                'district' => $request->district,
+                'city' => $request->city,
+                'zip' => $request->zip,
             );
-        }
         
         try {
-            // if($request->id){
-            //     Address::where('id', $request->id)->update($save_data);
-            //     $request->session()->flash('status','Address update successfully.');
-            // }
-            // else{
-                Address::insert($all_save_data);
+            if($request->id){
+                Address::where('id', $request->id)->update($save_data);
+                $request->session()->flash('status','Address update successfully.');
+            }
+            else{
+                Address::insert($save_data);
                 $request->session()->flash('status','Address added successfully.');
-            // }
+            }
         
             return redirect('/settings/users');
         } catch (\Illuminate\Database\QueryException $e) {
             return redirect('/settings/users/addForm/'.base64_encode($request->post_type));
         }
+        
+        // // this is batch input style
+        // $this->validate($request, [
+        //     'user_id' => ['required'],
+        //     'user_type' => ['required', 'in:User,Nominee'],
+        //     'full_address*' => ['string', 'required', 'max:255'],
+        //     'address_type*' => ['string', 'required', 'in:Present,Permanent,Office,Business'],
+        //     'division*' => ['string', 'nullable'],
+        //     'district*' => ['string', 'nullable'],
+        //     'city*' => ['string', 'nullable'],
+        //     'zip*' => ['string', 'nullable'],
+        // ]);
+        // $all_save_data = array();
+        // for($i=0; $i<count($request->full_address) && !empty($request->full_address[$i]) && $request->full_address[$i] != ''; $i++){
+        //     $all_save_data[] = array(
+        //         'user_id' => $request->user_id,
+        //         'full_address' => $request->full_address[$i],
+        //         'user_type' => $request->user_type,
+        //         'address_type' => $request->address_type[$i],
+        //         'division' => $request->division[$i],
+        //         'district' => $request->district[$i],
+        //         'city' => $request->city[$i],
+        //         'zip' => $request->zip[$i],
+        //     );
+        // }
+        
+        // try {
+        //     // if($request->id){
+        //     //     Address::where('id', $request->id)->update($save_data);
+        //     //     $request->session()->flash('status','Address update successfully.');
+        //     // }
+        //     // else{
+        //         Address::insert($all_save_data);
+        //         $request->session()->flash('status','Address added successfully.');
+        //     // }
+        
+        //     return redirect('/settings/users');
+        // } catch (\Illuminate\Database\QueryException $e) {
+        //     return redirect('/settings/users/addForm/'.base64_encode($request->post_type));
+        // }
     }
 
     /**

@@ -2137,11 +2137,11 @@ abbr[data-original-title] {
           text-decoration-skip-ink: none;
 }
 
-address {
+/* address {
   margin-bottom: 1rem;
   font-style: normal;
   line-height: inherit;
-}
+} */
 
 ol,
 ul,

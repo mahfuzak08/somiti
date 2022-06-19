@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Role;
 use App\Models\Address;
+use App\Models\Nominee;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -27,6 +28,7 @@ class Users extends Controller
         if($id !== null && $id > 0){
             $data["user"] = User::join('roles', 'users.label', '=', 'roles.id')->where('users.id', $id)->get(['users.*', 'roles.name as role_name']);
             $data["address"] = Address::where('user_id', $id)->get();
+            $data["nominee"] = Nominee::where('user_id', $id)->get();
         }
         $data["role"] = Role::where('id', '>', 1)->get();
         return view('admin.settings.user-add')->with($data);
@@ -178,6 +180,68 @@ class Users extends Controller
         // } catch (\Illuminate\Database\QueryException $e) {
         //     return redirect('/settings/users/addForm/'.base64_encode($request->post_type));
         // }
+    }
+
+    public function addressDelete($id, Request $request){
+        if(Address::where('id', $id)->delete())
+            $request->session()->flash("status", "Address delete successfully!!!");
+        else
+            $request->session()->flash("status", "Address delete error!!!");
+        
+        return redirect('/settings/users');
+    }
+
+    public function nomineeSave(Request $request)
+    {
+        $this->validate($request, [
+            'user_id' => ['required'],
+            'name' => ['string', 'required', 'max:255'],
+            'mobile' => ['required', 'string', 'min:11', 'max:13'],
+            'dob' => ['date', 'required'],
+            'relation' => ['string', 'required'],
+            'share' => ['string', 'required'],
+            'father_name' => ['string', 'nullable'],
+            'mother_name' => ['string', 'nullable'],
+            'full_address' => ['string', 'nullable'],
+            'nid' => ['string', 'nullable'],
+            'img' => ['string', 'nullable'],
+        ]);
+        $save_data = array(
+                'user_id' => $request->user_id,
+                'name' => $request->name,
+                'mobile' => $request->mobile,
+                'dob' => $request->dob,
+                'relation' => $request->relation,
+                'share' => $request->share,
+                'father_name' => $request->father_name,
+                'mother_name' => $request->mother_name,
+                'nid' => $request->nid,
+                'img' => $request->img,
+            );
+        
+        try {
+            if($request->id){
+                Nominee::where('id', $request->id)->update($save_data);
+                $request->session()->flash('status','Nominee update successfully.');
+            }
+            else{
+                Nominee::insert($save_data);
+                $request->session()->flash('status','Nominee added successfully.');
+            }
+        
+            return redirect('/settings/users');
+        } catch (\Illuminate\Database\QueryException $e) {
+            return redirect('/settings/users/addForm/'.base64_encode($request->post_type));
+        }
+    }
+
+    public function nomineeDelete($id, Request $request){
+        if(Nominee::where('id', $id)->delete())
+            $request->session()->flash("status", "Nominee delete successfully!!!");
+        else
+            $request->session()->flash("status", "Nominee delete error!!!");
+        
+        return redirect('/settings/users');
     }
 
     /**

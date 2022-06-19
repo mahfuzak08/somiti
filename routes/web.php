@@ -43,6 +43,9 @@ Route::controller(Users::class)->prefix('settings')->group(function () {
     Route::post('/users-save', 'save')->middleware(['auth', 'verified'])->name('user.save');
     Route::delete('/users-delete/{id}', 'remove')->middleware(['auth', 'verified']);
     Route::post('/users-address-save/{type?}/{id?}', 'addressSave')->middleware(['auth', 'verified'])->name('address.save');
+    Route::delete('/address-delete/{id?}', 'addressDelete')->middleware(['auth', 'verified']);
+    Route::post('/users-nominee-save/{type?}/{id?}', 'nomineeSave')->middleware(['auth', 'verified'])->name('nominee.save');
+    Route::delete('/nominee-delete/{id?}', 'nomineeDelete')->middleware(['auth', 'verified']);
 
     Route::get('/role', 'role')->middleware(['auth', 'verified']);
     Route::get('/role-add/{id?}', 'roleForm')->middleware(['auth', 'verified']);

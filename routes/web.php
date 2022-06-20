@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Users;
+use App\Models\Address;
+use App\Models\Nominee;
 use App\Models\Role;
 
 /*
@@ -25,6 +27,8 @@ Route::get('/home', function () {
 
 Route::get('/profile', function () {
     $data["role"] = Role::all();
+    $data["address"] = Address::where('user_id', auth()->user()->id)->get();
+    $data["nominee"] = Nominee::where('user_id', auth()->user()->id)->get();
     return view('admin.profile')->with($data);
 })->middleware(['auth', 'verified']);
 

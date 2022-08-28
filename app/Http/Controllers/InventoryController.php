@@ -74,6 +74,7 @@ class InventoryController extends Controller
                 $request->session()->flash('status','Brand update successfully.');
             }
             else{
+                $save_data['created_at'] = date('Y-m-d H:i:s');
                 Brands::insert($save_data);
                 $request->session()->flash('status','Brand added successfully.');
             }

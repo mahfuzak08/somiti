@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Users;
+use App\Http\Controllers\InventoryController;
 use App\Models\Address;
 use App\Models\Nominee;
 use App\Models\Role;
@@ -21,10 +22,9 @@ Route::get('/', function () {
     return view('home');
 });
 
-Route::get('/home', function () {
-    return view('admin.dashboard');
-})->middleware(['auth', 'verified']);
-
+/**
+ * Admin panel route
+ */
 Route::get('/profile', function () {
     $data["role"] = Role::all();
     $data["address"] = Address::where('user_id', auth()->user()->id)->get();
@@ -35,6 +35,22 @@ Route::get('/profile', function () {
 Route::get('/change-password', function () {
     return view('admin.change-password');
 })->middleware(['auth', 'verified']);
+
+Route::get('/home', function () {
+    return view('admin.dashboard');
+})->middleware(['auth', 'verified']);
+
+Route::controller(InventoryController::class)->prefix('inventory')->group(function () {
+    Route::get('/brands', 'brands')->middleware(['auth', 'verified']);
+    Route::get('/brands-add/{id?}', 'brandForm')->middleware(['auth', 'verified']);
+    Route::post('/brands-save', 'brandSave')->middleware(['auth', 'verified'])->name('brand.save');
+    Route::delete('/brands-delete/{id}', 'brandRemove')->middleware(['auth', 'verified']);
+    
+    Route::get('/categories', 'categories')->middleware(['auth', 'verified']);
+    Route::get('/categories-add/{id?}', 'categoriesForm')->middleware(['auth', 'verified']);
+    Route::post('/categories-save', 'categoriesSave')->middleware(['auth', 'verified'])->name('category.save');
+    Route::delete('/categories-delete/{id}', 'categoriesRemove')->middleware(['auth', 'verified']);
+});
 
 // Route::prefix('settings')->group(function () {
 //     Route::get('/users', [Users::class, 'index'])->middleware(['auth', 'verified']);

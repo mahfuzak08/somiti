@@ -49,6 +49,47 @@
         <span class="menu-title">Dashboard</span>
       </a>
     </li>
+    <li class="nav-item {{ request()->is('inventory*') ? 'active' : '' }}">
+      <a class="nav-link" data-toggle="collapse" href="#inventory" aria-expanded="{{ request()->is('users*') ? 'true' : 'false' }}" aria-controls="inventory">
+        <i class="menu-icon mdi mdi-poll-box"></i>
+        <span class="menu-title">Inventory</span>
+        <i class="menu-arrow"></i>
+      </a>
+      <div class="collapse {{ request()->is('inventory*') ? 'show' : '' }}" id="inventory">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item {{ request()->is('inventory/brands*') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ url('inventory/brands') }}"><i class="submenu-icon mdi mdi-copyright"></i> Brands</a>
+          </li>
+          <li class="nav-item {{ request()->is('inventory/categories*') ? 'active' : '' }}">
+          <li class="nav-item {{ request()->is('inventory/categories*') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ url('inventory/categories') }}"><i class="submenu-icon mdi mdi-file-tree"></i> Categories</a>
+          </li>
+          <li class="nav-item {{ request()->is('inventory/products*') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ url('inventory/products') }}"><i class="submenu-icon mdi mdi-store"></i> Products</a>
+          </li>
+        </ul>
+      </div>
+    </li>
+    <li class="nav-item {{ request()->is('accounts*') ? 'active' : '' }}">
+      <a class="nav-link" data-toggle="collapse" href="#accounts" aria-expanded="{{ request()->is('users*') ? 'true' : 'false' }}" aria-controls="accounts">
+        <i class="menu-icon mdi mdi-account-card-details"></i>
+        <span class="menu-title">Accounts</span>
+        <i class="menu-arrow"></i>
+      </a>
+      <div class="collapse {{ request()->is('accounts*') ? 'show' : '' }}" id="accounts">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item {{ request()->is('accounts/users*') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ url('accounts/users') }}"><i class="submenu-icon mdi mdi-account-multiple"></i> Purchase</a>
+          </li>
+          <li class="nav-item {{ request()->is('accounts/role*') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ url('accounts/role') }}"><i class="submenu-icon mdi mdi-file-tree"></i> Bulk Purchase</a>
+          </li>
+          <li class="nav-item {{ request()->is('accounts/typography') }}">
+            <a class="nav-link" href="{{ url('/accounts/typography') }}"> </a>
+          </li>
+        </ul>
+      </div>
+    </li>
     <li class="nav-item {{ request()->is('settings*') ? 'active' : '' }}">
       <a class="nav-link" data-toggle="collapse" href="#settings" aria-expanded="{{ request()->is('users*') ? 'true' : 'false' }}" aria-controls="settings">
         <i class="menu-icon mdi mdi-settings"></i>
